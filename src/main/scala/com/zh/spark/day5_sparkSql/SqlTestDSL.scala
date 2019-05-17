@@ -15,19 +15,16 @@ object SqlTestDSL {
     //文件路径
     val path: String = getClass.getClassLoader.getResource("user.txt").getFile
     // 创建SparkSession
-    val sparkSession: SparkSession = SparkSession.builder()
-      .appName("SqlTestDSL")
-      .master("local[2]")
-      .getOrCreate()
+    val sparkSession: SparkSession = SparkSession.builder().appName("SqlTestDSL").master("local[2]").getOrCreate()
     // 创建RDD
     val rdd1: RDD[String] = sparkSession.sparkContext.textFile(path)
     // 切分数据
     val rdd2: RDD[Array[String]] = rdd1.map(_.split(" "))
 
     val rowRdd: RDD[Row] = rdd2.map(x => {
-      val id = x(0).toInt
-      val name = x(1).toString
-      val age = x(2).toInt
+      val id:Int = x(0).toInt
+      val name:String = x(1).toString
+      val age:Int = x(2).toInt
       Row(id, name, age) //Row表示一行数据
     })
 

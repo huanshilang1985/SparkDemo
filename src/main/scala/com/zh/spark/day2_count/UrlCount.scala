@@ -17,7 +17,7 @@ object UrlCount {
     val path: String = getClass.getClassLoader.getResource("itstar.log").getFile
     // 加载数据
     val conf: SparkConf = new SparkConf().setAppName("UrlCount").setMaster("local[2]")
-    val sc: SparkContext = new SparkContext(conf);
+    val sc: SparkContext = new SparkContext(conf)
     // 载入数据
     val rdd1: RDD[String] = sc.textFile(path)
     //对数据进行计算  w,1  h,1

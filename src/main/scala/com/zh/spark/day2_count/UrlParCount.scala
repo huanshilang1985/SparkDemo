@@ -13,6 +13,7 @@ import scala.collection.mutable
   *
   * 需求：加入自定义分区
   * 按照学院分区，相同的学院分为一个结果文件
+  *
   */
 object UrlParCount {
 
@@ -46,7 +47,7 @@ object UrlParCount {
     val xueyuan: Array[String] = rdd4.map(_._1).distinct().collect
     val xueYuanPartitioner: XueYuanPartitioner = new XueYuanPartitioner(xueyuan)
 
-    // 加入分区规则
+    // 加入分区规则，只取最大的结果
     val rdd5: RDD[(String, (String, Int))] = rdd4.partitionBy(xueYuanPartitioner).mapPartitions(it => {
       it.toList.sortBy(_._2._2).reverse.take(1).iterator
     })

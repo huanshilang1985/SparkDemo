@@ -74,6 +74,13 @@
             <version>3.4.10</version>
             <type>pom</type>
         </dependency>
+
+        <!-- SparkStreaming-flume集成包 -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-flume_2.11</artifactId>
+            <version>2.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>

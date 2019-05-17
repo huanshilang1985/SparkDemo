@@ -13,10 +13,7 @@ object SqlWordCount {
   def main(args: Array[String]): Unit = {
     val path: String = getClass.getClassLoader.getResource("wc.txt").getFile
 
-    val sparkSession: SparkSession = SparkSession.builder()
-      .appName("SqlWordCount")
-      .master("local[2]")
-      .getOrCreate()
+    val sparkSession: SparkSession = SparkSession.builder().appName("SqlWordCount").master("local[2]").getOrCreate()
 
     //加载数据，使用dataSet处理数据，dataSet是一个更加智能的RDD，默认有一列叫value，value存储的是所有数据
     val datas: Dataset[String] = sparkSession.read.textFile(path)
@@ -27,7 +24,7 @@ object SqlWordCount {
     // 注册视图
     word.createTempView("wc_t")
 
-    val sql:String = "select value as word, count(*) sum from wc_t group by value order by sum desc";
+    val sql:String = "select value as word, count(*) sum from wc_t group by value order by sum desc"
     val sqlFrame: DataFrame = sparkSession.sql(sql)
     sqlFrame.show()
 

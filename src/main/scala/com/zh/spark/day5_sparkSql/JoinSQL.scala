@@ -4,18 +4,15 @@ import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 
 /**
   * @author zhanghe
-  * 2019/4/4 16:28
+  *         2019/4/4 16:28
   *
-  * SQL方式，两个表join关联
+  *         SQL方式，两个表join关联
   */
 object JoinSQL {
 
   def main(args: Array[String]): Unit = {
     // 创建SparkSession
-    val sparkSession: SparkSession = SparkSession.builder()
-      .appName("JoinSQL")
-      .master("local[2]")
-      .getOrCreate()
+    val sparkSession: SparkSession = SparkSession.builder().appName("JoinSQL").master("local[2]").getOrCreate()
 
     //直接创建DataSet
     import sparkSession.implicits._
@@ -23,9 +20,9 @@ object JoinSQL {
     //整理数据
     val dataDS1: Dataset[(Int, String, Int)] = datas1.map(x => {
       val fields: Array[String] = x.split(" ")
-      val id = fields(0).toInt
-      val name = fields(1).toString
-      val age = fields(2).toInt
+      val id: Int = fields(0).toInt
+      val name: String = fields(1).toString
+      val age: Int = fields(2).toInt
       (id, name, age) //元组输出
     })
     //转成DataDrame
@@ -36,8 +33,8 @@ object JoinSQL {
 
     val dataDS2: Dataset[(Int, String)] = datas2.map(x => {
       val fields: Array[String] = x.split(" ")
-      val age = fields(0).toInt
-      val desc = fields(1).toString
+      val age: Int = fields(0).toInt
+      val desc: String = fields(1).toString
       (age, desc) //元祖输出
     })
     //3.转化为dataFrame

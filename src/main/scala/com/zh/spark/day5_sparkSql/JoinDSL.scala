@@ -11,10 +11,7 @@ object JoinDSL {
 
   def main(args: Array[String]): Unit = {
     // 创建SparkSession
-    val sparkSession: SparkSession = SparkSession.builder()
-      .appName("JoinDemo")
-      .master("local[2]")
-      .getOrCreate()
+    val sparkSession: SparkSession = SparkSession.builder().appName("JoinDemo").master("local[2]").getOrCreate()
 
     import sparkSession.implicits._
     //直接创建DataSet

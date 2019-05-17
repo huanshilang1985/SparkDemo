@@ -18,10 +18,7 @@ object SqlTestSQL {
     val path: String = getClass.getClassLoader.getResource("user.txt").getFile
 
     // 构建SparkSession
-    val sparkSession: SparkSession = SparkSession.builder()
-      .appName("SqlTestSQL")
-      .master("local[2]")
-      .getOrCreate()
+    val sparkSession: SparkSession = SparkSession.builder().appName("SqlTestSQL").master("local[2]").getOrCreate()
     // 创建rdd, path也可以是hdfs路径
     val rdd1: RDD[String] = sparkSession.sparkContext.textFile(path)
     // 切分数据
@@ -43,7 +40,7 @@ object SqlTestSQL {
 
     // 创建DataFram
     val userDf: DataFrame = sparkSession.createDataFrame(rowRdd, schema)
-    // 注册表
+    // 注册表，创建视图
     userDf.createTempView("user_t")
     // 写SQL
     val usql: DataFrame = sparkSession.sql("select * from user_t order by age")
