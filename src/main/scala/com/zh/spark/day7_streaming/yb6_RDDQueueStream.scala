@@ -10,8 +10,9 @@ import scala.collection.mutable
 
 /**
   * RDD队列流
+  * 很少用到，Streaming的数据源是一个RDD的队列
   */
-object yb7_RDDQueueStream {
+object yb6_RDDQueueStream {
 
   def main(args: Array[String]): Unit = {
     Logger.getLogger("org.apache.spark").setLevel(Level.ERROR)
@@ -21,7 +22,7 @@ object yb7_RDDQueueStream {
     val conf: SparkConf = new SparkConf().setAppName("yb_MyNetworkWordCount").setMaster("local[2]")
     val ssc: StreamingContext = new StreamingContext(conf, Seconds(3))
 
-    //需要先创建一个队列 RDD[In
+    //需要先创建一个队列 RDD[Int]
     val rddQueue: mutable.Queue[RDD[Int]] = new mutable.Queue[RDD[Int]]()
     //往队列里面添加数据  --->  创建数据源
     for(i <- 1 to 3) {
@@ -37,5 +38,7 @@ object yb7_RDDQueueStream {
     ssc.start()
     ssc.awaitTermination()
   }
+
+
 
 }

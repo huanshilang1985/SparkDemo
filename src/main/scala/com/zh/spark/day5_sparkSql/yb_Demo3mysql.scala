@@ -37,7 +37,7 @@ object yb_Demo3mysql {
 
     result.show()
 
-    //把结果存入到mysql中
+    //把结果存入到mysql中，拼接Mysql参数
     val props = new Properties()
     props.setProperty("user", "root")
     props.setProperty("password", "123456")

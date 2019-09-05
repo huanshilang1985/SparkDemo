@@ -45,7 +45,7 @@ object m3_MyTomcatLogCountToMysql {
   }
 
 
-  def saveToMysql(it: Iterator[(String, Int)]) = {
+  def saveToMysql(it: Iterator[(String, Int)]): Unit = {
     var conn: Connection = null
     var pst: PreparedStatement = null
 
@@ -53,11 +53,10 @@ object m3_MyTomcatLogCountToMysql {
       conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/company?serverTimezone=UTC&characterEncoding=utf-8", "root", "123456")
       pst = conn.prepareStatement("insert into mydata values(?,?)")
 
+      //foreach没有返回值，map是有返回值的循环
       it.foreach(f => {
-
         pst.setString(1, f._1)
         pst.setInt(2, f._2)
-
         pst.executeUpdate()
       })
     } catch {

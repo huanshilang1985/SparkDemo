@@ -10,7 +10,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 /**
   * 集成Spark SQL：在 Spark Streaming中使用SQL语句
   */
-object yb6_MyNetWorkWordCountWithSQL {
+object yb5_MyNetWorkWordCountWithSQL {
 
   def main(args: Array[String]): Unit = {
     Logger.getLogger("org.apache.spark").setLevel(Level.ERROR)
@@ -31,8 +31,10 @@ object yb6_MyNetWorkWordCountWithSQL {
       val spark:SparkSession = SparkSession.builder().config(ssc.sparkContext.getConf).getOrCreate()
       SparkSession.builder().config(ssc.sparkContext.getConf).getOrCreate()
       import spark.implicits._
-      //创建视图
-      rdd.toDF("word")
+      //注入隐式转换，把RDD转换成DataFrame, 表df1只有一列名字叫word
+      val df1: DataFrame = rdd.toDF("word")
+      // 创建视图
+      df1.createOrReplaceTempView("words")
       //执行SQL 通过SQL实现wordcount
       spark.sql("select word,count(1) from words group by word").show()
     })

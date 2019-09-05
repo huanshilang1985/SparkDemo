@@ -20,7 +20,7 @@ object yb1_MyNetworkWordCount {
     Logger.getLogger("org.apache.spark").setLevel(Level.ERROR)
     Logger.getLogger("org.eclipse.jetty.server").setLevel(Level.OFF)
 
-    //创建一个Streaming Context对象, local[2] 表示开启了两个线程, Seconds(3) 表示采样时间间
+    //创建一个Streaming Context对象, local[2] 表示开启了两个线程,Streaming要求2个线程异常， Seconds(3) 表示采样时间间隔
     val conf: SparkConf = new SparkConf().setAppName("yb_MyNetworkWordCount").setMaster("local[2]")
     val ssc: StreamingContext = new StreamingContext(conf, Seconds(3))
 
@@ -28,9 +28,10 @@ object yb1_MyNetworkWordCount {
     val lines: ReceiverInputDStream[String] = ssc.socketTextStream("192.168.109.133", 1234, StorageLevel.MEMORY_ONLY)
     //lines中包含了netcat服务器发送过来的数据,分词操作
     val words: DStream[String] = lines.flatMap(_.split(" "))
-    //计数， transform是把RDD转换成另一个RDD
-    val wordPair: DStream[(String, Int)] = words.transform(x => x.map(x=>(x,1)))
-    wordPair.print()
+    //计数， transform是把RDD转换成另一个RDD， transform是RDD转换成新的RDD的算子，参数是自定义函数
+//    val wordCount: DStream[(String, Int)] = words.transform(x => x.map(x=>(x,1)))
+    val wordCount: DStream[(String, Int)] = words.map((_,1)).reduceByKey(_+_)
+    wordCount.print() //打印结果
     ssc.start()   //启动StreamingContext 进行计算
     ssc.awaitTermination()  //等待任务结束
   }

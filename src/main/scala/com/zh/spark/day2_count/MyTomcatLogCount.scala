@@ -36,7 +36,7 @@ object MyTomcatLogCount {
     //统计出每个jsp的次数
     val rdd2: RDD[(String, Int)] = rdd1.reduceByKey(_ + _)
 
-    //使用value排序,take取前2条
+    //使用value降序排序,take取前2条
     val rdd3: RDD[(String, Int)] = rdd2.sortBy(_._2, false)
     rdd3.take(2).foreach(println)
     sc.stop()

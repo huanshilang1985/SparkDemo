@@ -9,7 +9,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 /**
   * 使用检查点、updateStateByKey 实现累加操作
   */
-object yb4_MyTotalNetworkWordCount {
+object yb2_MyTotalNetworkWordCount {
 
   def main(args: Array[String]): Unit = {
     Logger.getLogger("org.apache.spark").setLevel(Level.ERROR)
@@ -20,7 +20,7 @@ object yb4_MyTotalNetworkWordCount {
     val ssc: StreamingContext = new StreamingContext(conf, Seconds(3))
 
     //设置检查点目录，保存之前的状态信息
-    ssc.checkpoint("htfs://192.168.109.131:8020/tmp_files/chkp")
+    ssc.checkpoint("hdfs://192.168.109.131:8020/tmp_files/chkp")
 
     //创建DStream，接收此IP端口消息
     val lines: ReceiverInputDStream[String] = ssc.socketTextStream("192.168.109.133", 1234, StorageLevel.MEMORY_ONLY)
@@ -30,11 +30,12 @@ object yb4_MyTotalNetworkWordCount {
     /*
      * 定义一个值函数，进行累加运算
      * 接收两个参数：1、当前的值是多少  2、之前的结果是多少
+     * Option表示可能有，也可能没有
      */
     val addFunc = (currentValues: Seq[Int], previousValues: Option[Int]) => {
       //把当前值的序列进行累加
       val currentTotal: Int = currentValues.sum
-      //把之前的值上再累加
+      //把之前的值上再累加,Some代表有值
       Some(currentTotal + previousValues.getOrElse(0))
     }
     //进行累加运算

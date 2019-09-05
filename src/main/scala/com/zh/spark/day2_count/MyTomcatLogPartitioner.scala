@@ -49,25 +49,25 @@ object MyTomcatLogPartitioner {
     sc.stop()
   }
 
-  /**
-    * 自定义分区规则类
-    *
-    * @param jspList
-    */
-  class MyWebPartioner(jspList: Array[String]) extends Partitioner {
-    //定义一个集合来保存分区条件   String 代表jsp的名字 Int 代表序号
-    private val partitionMap: mutable.HashMap[String, Int] = new mutable.HashMap[String, Int]()
-    var partID: Int = 0 // 初始分区号
-    for (jsp <- jspList) {
-      partitionMap.put(jsp, partID)
-      partID += 1
-    }
+}
 
-    //返回有多少个分区
-    def numPartitions: Int = partitionMap.size
-
-    //根据jsp，返回对应的分区
-    def getPartition(key: Any): Int = partitionMap.getOrElse(key.toString(), 0)
+/**
+  * 自定义分区规则类：用jsp名字做分区
+  *
+  * @param jspList
+  */
+class MyWebPartioner(jspList: Array[String]) extends Partitioner {
+  //定义一个集合来保存分区条件   String 代表jsp的名字 Int 代表序号
+  private val partitionMap: mutable.HashMap[String, Int] = new mutable.HashMap[String, Int]()
+  var partID: Int = 0 // 初始分区号
+  for (jsp <- jspList) {
+    partitionMap.put(jsp, partID) //记录分区关系
+    partID += 1
   }
 
+  //返回有多少个分区
+  def numPartitions: Int = partitionMap.size
+
+  //根据jsp，返回对应的分区
+  def getPartition(key: Any): Int = partitionMap.getOrElse(key.toString, 0)
 }

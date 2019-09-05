@@ -31,4 +31,15 @@ object SparkWordCount {
     wd(arr)
   }
 
+  /**
+    * 不设置master，设置出参入参，把jar包发到集群内启动
+    *  spark-submit命令
+    *  --master spark的集群地址
+    *  --class 要执行的类名，jar包地址
+    *  入参
+    *  出参
+    */
+  // ./spark-submit --master spark://node3:7077 --class day0331.WordCount /usr/local/tmp_files/Demo1.jar hdfs://192.168.109.131:8020/tmp_files/test_WordCount.txt hdfs://node1:8020/output/0331/Demo1
+
+
 }

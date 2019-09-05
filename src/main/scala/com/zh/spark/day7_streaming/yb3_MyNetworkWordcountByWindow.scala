@@ -9,7 +9,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 /**
   * 窗口操作：每10秒钟，把过去30秒的数据读取出来
   */
-object yb5_MyNetworkWordcountByWindow {
+object yb3_MyNetworkWordcountByWindow {
 
   def main(args: Array[String]): Unit = {
     Logger.getLogger("org.apache.spark").setLevel(Level.ERROR)

@@ -9,7 +9,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 /**
   * Spark接收Flume的push消息
   */
-object yb3_MyFlumeStream {
+object yb7_MyFlumeStream {
 
   def main(args: Array[String]): Unit = {
     Logger.getLogger("org.apache.spark").setLevel(Level.ERROR)

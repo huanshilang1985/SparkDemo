@@ -1,0 +1,21 @@
+#bin/flume-ng agent -n a1 -f myagent/option5 -c conf -Dflume.root.logger=INFO,console
+a1.channels = c1
+a1.sinks = k1
+a1.sources = r1
+
+a1.sources.r1.type = spooldir
+a1.sources.r1.spoolDir = /usr/local/tmp_files/logs
+
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 100000
+a1.channels.c1.transactionCapacity = 100000
+
+a1.sinks.k1.type = org.apache.spark.streaming.flume.sink.SparkSink
+a1.sinks.k1.channel = c1
+a1.sinks.k1.hostname = 192.168.109.133
+a1.sinks.k1.port = 1234
+
+#组装source、channel、sink
+a1.sources.r1.channels = c1
+a1.sinks.k1.channel = c1
+
